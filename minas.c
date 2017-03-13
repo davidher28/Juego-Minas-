@@ -60,7 +60,6 @@ void ColocarNumero(int filas,int cols, tipoCasilla **matriz){
 		for(j=0;j<cols;j++){
 			if (i=0){
 				
-				
 			}
 		}
 	}
