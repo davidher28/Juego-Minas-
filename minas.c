@@ -195,9 +195,15 @@ void main(int argc, char*argv[]){
 	int cols=atoi (argv [2]);	
 	int minas=atoi (argv [3]);
 	tipoCasilla **matriz=CrearMatriz (filas,cols);
-	printf ("Si deseas colocar una bandera hazlo con el numero 7\n");
-	printf ("De lo contrario usa el 0 como tercer comando\n");
-	printf ("Solo se gana cuando se colocan banderas sobre todas las minas\n");
+	printf ("\n");;
+	printf ("Instrucciones:\n");
+	printf ("-- Primer valor es la fila.\n");
+	printf ("-- Segundo valor es la columna.\n");
+	printf ("-- Tercer valor es el tipo de casilla.\n");
+	printf ("-- Si deseas colocar una bandera hazlo con el numero 7.\n");
+	printf ("-- De lo contrario usa el 0 como tercer comando.\n");
+	printf ("-- Solo se gana cuando se colocan banderas sobre todas las minas.\n");
+	printf ("-------------------------------------------------------------------\n");
 	PonerMinas(filas,cols,matriz,minas);
 	ColocarNumero(filas,cols,matriz);
 	dibujarTablero(filas,cols,matriz);
@@ -209,12 +215,12 @@ void main(int argc, char*argv[]){
 		int o=ganar(filas,cols,matriz);
 		if (matriz[x][y].tipo=='M' && z==0){
 			printf ("PERDISTE HABIA UNA MINA EN ESA POSICION!!\n");
-			printf ("M=Mina, C=Normal\n");
+			printf ("M=Mina C=Normal\n");
 			dibujarTablero2(filas,cols,matriz);
 			break;
 		}
 		if (matriz[x][y].tipo=='C' || z==7){
-			printf ("--------------------------\n");
+			printf ("-------------------------------\n");
 			p++;
 			AbrirNumeros(filas,cols,matriz,x,y);
 			jugar (filas,cols,matriz,x,y,z);
@@ -222,11 +228,11 @@ void main(int argc, char*argv[]){
 			
 		}	
 		n++;
-		//(n)+(k)==(filas*cols)-minas
 		if(o==minas-1){
 			printf("\n");
 			printf("HAS GANADO EL JUEGO!!\n");
 			printf ("MIRA LAS POSICIONES DE LAS MINAS:\n");
+			printf ("M=Mina C=Normal\n");
 			dibujarTablero2(filas,cols,matriz);
 			break;
 		}
