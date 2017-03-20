@@ -197,6 +197,7 @@ void main(int argc, char*argv[]){
 	tipoCasilla **matriz=CrearMatriz (filas,cols);
 	printf ("Si deseas colocar una bandera hazlo con el numero 7\n");
 	printf ("De lo contrario usa el 0 como tercer comando\n");
+	printf ("Solo se gana cuando se colocan banderas sobre todas las minas\n");
 	PonerMinas(filas,cols,matriz,minas);
 	ColocarNumero(filas,cols,matriz);
 	dibujarTablero(filas,cols,matriz);
@@ -206,7 +207,6 @@ void main(int argc, char*argv[]){
 		scanf("%d %d %d",&x,&y,&z);
 		int k=AbrirNumeros(filas,cols,matriz,x,y);
 		int o=ganar(filas,cols,matriz);
-		printf("%d\n",k);
 		if (matriz[x][y].tipo=='M' && z==0){
 			printf ("PERDISTE HABIA UNA MINA EN ESA POSICION!!\n");
 			printf ("M=Mina, C=Normal\n");
@@ -222,7 +222,8 @@ void main(int argc, char*argv[]){
 			
 		}	
 		n++;
-		if((n)+(k)==(filas*cols)-minas || o==minas-1){
+		//(n)+(k)==(filas*cols)-minas
+		if(o==minas-1){
 			printf("\n");
 			printf("HAS GANADO EL JUEGO!!\n");
 			printf ("MIRA LAS POSICIONES DE LAS MINAS:\n");
