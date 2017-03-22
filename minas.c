@@ -219,8 +219,8 @@ void main(int argc, char*argv[]){
 	printf ("-- Primer valor es la fila.\n");
 	printf ("-- Segundo valor es la columna.\n");
 	printf ("-- Tercer valor es el tipo de casilla.\n");
-	printf ("-- Si deseas colocar una bandera hazlo con el numero 7.\n");
-	printf ("-- De lo contrario usa el 0 como tercer comando.\n");
+	printf ("-- Si deseas colocar una bandera hazlo con la letra f.\n");
+	printf ("-- De lo contrario usa la letra n como tercer comando.\n");
 	printf ("-- Solo se gana cuando se colocan banderas sobre todas las minas.\n");
 	printf ("-------------------------------------------------------------------\n");
 	PonerMinas(filas,cols,matriz,minas);
@@ -248,7 +248,7 @@ void main(int argc, char*argv[]){
 
 			
 		}	
-		if (matriz[x][y].tipo=='C' && z=='f'){
+		if ((matriz[x][y].tipo=='C' || matriz[x][y].tipo=='M' ) && z=='f'){
 			printf ("-------------------------------\n");
 			p++;
 			jugar (filas,cols,matriz,x,y,z);
