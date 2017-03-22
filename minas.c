@@ -4,11 +4,11 @@
 #include <time.h>
 
 struct casilla {
-	int etiq;
+	char etiq;
 	char tipo;
 	int nMinas;
 	char o;
-	int f;
+	char f;
 };
 typedef struct casilla tipoCasilla;
 tipoCasilla **matriz;
@@ -19,11 +19,11 @@ tipoCasilla **CrearMatriz(int filas, int cols){
 	for (i=0;i<filas;i++){
 		matriz[i]=(tipoCasilla*) malloc (cols*sizeof(tipoCasilla));
 		for(j=0;j<cols;j++){
-			matriz[i][j].etiq=9;
+			matriz[i][j].etiq='*';
 			matriz[i][j].tipo='C';
 			matriz[i][j].nMinas=0;
 			matriz[i][j].o=0;
-			matriz[i][j].f=7;
+			matriz[i][j].f='F';
 
 		}
 	}
@@ -71,7 +71,7 @@ void dibujarTablero(int filas, int cols, tipoCasilla **matriz){
 	for (i=0;i<filas;i++){
 		printf ("%d--",i);
 		for(j=0;j<cols;j++){
-			printf ("|%d|",matriz[i][j].etiq);
+			printf ("|%c|",matriz[i][j].etiq);
 		}
 	printf ("\n");	
 	}
@@ -81,9 +81,8 @@ void dibujarTablero(int filas, int cols, tipoCasilla **matriz){
 int validar (int i, int j, int filas, int cols){
 	if ((i)>=0 && (j)>=0 && (j)<cols && (i)<filas){
 		return 1;
-	}else{
-		return 0;
 	}
+	return 0;
 }
 
 void ColocarNumero(int filas,int cols, tipoCasilla **matriz){
@@ -121,60 +120,80 @@ void ColocarNumero(int filas,int cols, tipoCasilla **matriz){
 	}	
 }
 
-int  AbrirNumeros(int filas,int cols, tipoCasilla **matriz,int x, int y){
-	int n=0;
-	if(validar (x,y-1,filas,cols) && matriz[x][y-1].tipo=='C'){
-		n++;
-		matriz[x][y-1].etiq=matriz[x][y-1].nMinas;
-		
-	}
-	if(validar (x,y+1,filas,cols) && matriz[x][y+1].tipo=='C'){
-		n++;
-		matriz[x][y+1].etiq=matriz[x][y+1].nMinas;
-		
-	}
-			 
-	if(validar (x-1,y-1,filas,cols) && matriz[x-1][y-1].tipo=='C'){
-		n++;
-		matriz[x-1][y-1].etiq=matriz[x-1][y-1].nMinas;
-		
-	}
-			
-	if(validar (x-1,y,filas,cols) && matriz[x-1][y].tipo=='C'){
-		n++;
-		matriz[x-1][y].etiq=matriz[x-1][y].nMinas;
-		
-	}
-	if(validar (x-1,y+1,filas,cols) && matriz[x-1][y+1].tipo=='C'){
-		n++;
-		matriz[x-1][y+1].etiq=matriz[x-1][y+1].nMinas;
-		
-	}
-	if(validar (x+1,y-1,filas,cols) && matriz[x+1][y-1].tipo=='C'){
-		n++;
-		matriz[x+1][y-1].etiq=matriz[x+1][y-1].nMinas;
-		
-	}
-	if(validar (x+1,y,filas,cols) && matriz[x+1][y].tipo=='C'){
-		n++;
-		matriz[x+1][y].etiq=matriz[x+1][y].nMinas;
-		
-	}
-	if(validar (x+1,y+1,filas,cols) && matriz[x+1][y+1].tipo=='C'){
-		n++;
-		matriz[x+1][y+1].etiq=matriz[x+1][y+1].nMinas;
-	}			
-	return n;	
+void AbrirNumeros(int filas,int cols, tipoCasilla **matriz,int x, int y){
+	int n=0,i,j;
+	if (matriz[x][y].nMinas==0){
+		if(validar (x,y-1,filas,cols) && matriz[x][y-1].nMinas==0 && matriz[x][y-1].tipo=='C' && matriz[x][y-1].etiq=='*'){
+			matriz[x][y-1].etiq=matriz[x][y-1].nMinas+48;
+			AbrirNumeros(filas,cols,matriz,x,y-1);
+		}
+		if(validar (x,y+1,filas,cols) && matriz[x][y+1].nMinas==0 && matriz[x][y+1].tipo=='C' && matriz[x][y+1].etiq=='*'){
+			matriz[x][y+1].etiq=matriz[x][y+1].nMinas+48;
+			AbrirNumeros(filas,cols,matriz,x,y+1);
+		}		 
+		if(validar (x-1,y-1,filas,cols) && matriz[x-1][y-1].nMinas==0 && matriz[x-1][y-1].tipo=='C' && matriz[x-1][y-1].etiq=='*' ){
+			matriz[x-1][y-1].etiq=matriz[x-1][y-1].nMinas+48;
+			AbrirNumeros(filas,cols,matriz,x-1,y-1);
+		}		
+		if(validar (x-1,y,filas,cols) && matriz[x-1][y].nMinas==0 && matriz[x-1][y].tipo=='C' && matriz[x-1][y].etiq=='*'){
+			matriz[x-1][y].etiq=matriz[x-1][y].nMinas+48;
+			AbrirNumeros(filas,cols,matriz,x-1,y);
+		}
+		if(validar (x-1,y+1,filas,cols)  && matriz[x-1][y+1].nMinas==0 && matriz[x-1][y+1].tipo=='C' && matriz[x-1][y+1].etiq=='*'){
+			matriz[x-1][y+1].etiq=matriz[x-1][y+1].nMinas+48;
+			AbrirNumeros(filas,cols,matriz,x-1,y+1);
+		}
+		if(validar (x+1,y-1,filas,cols) && matriz[x+1][y-1].nMinas==0 && matriz[x+1][y-1].tipo=='C' && matriz[x+1][y-1].etiq=='*'){
+			matriz[x+1][y-1].etiq=matriz[x+1][y-1].nMinas+48;
+			AbrirNumeros(filas,cols,matriz,x+1,y-1);
+		}
+		if(validar (x+1,y,filas,cols) && matriz[x+1][y].nMinas==0 && matriz[x+1][y].tipo=='C' && matriz[x+1][y].etiq=='*' ){
+			matriz[x+1][y].etiq=matriz[x+1][y].nMinas+48;
+			AbrirNumeros(filas,cols,matriz,x+1,y);
+		}
+		if(validar (x+1,y+1,filas,cols) && matriz[x+1][y+1].nMinas==0 && matriz[x+1][y+1].tipo=='C' && matriz[x+1][y+1].etiq=='*'){
+			matriz[x+1][y+1].etiq=matriz[x+1][y+1].nMinas+48;
+			AbrirNumeros(filas,cols,matriz,x+1,y+1);
+		}
+		if(validar (x,y-1,filas,cols) && matriz[x][y-1].tipo=='C' && matriz[x][y-1].etiq=='*'){
+			matriz[x][y-1].etiq=matriz[x][y-1].nMinas+48;
+
+		}
+		if(validar (x,y+1,filas,cols) && matriz[x][y+1].tipo=='C' && matriz[x][y+1].etiq=='*'){
+			matriz[x][y+1].etiq=matriz[x][y+1].nMinas+48;
+		}		 
+		if(validar (x-1,y-1,filas,cols)  && matriz[x-1][y-1].tipo=='C' && matriz[x-1][y-1].etiq=='*' ){
+			matriz[x-1][y-1].etiq=matriz[x-1][y-1].nMinas+48;
+		}		
+		if(validar (x-1,y,filas,cols) && matriz[x-1][y].tipo=='C' && matriz[x-1][y].etiq=='*'){
+			matriz[x-1][y].etiq=matriz[x-1][y].nMinas+48;
+		}
+		if(validar (x-1,y+1,filas,cols)  && matriz[x-1][y+1].tipo=='C' && matriz[x-1][y+1].etiq=='*'){
+			matriz[x-1][y+1].etiq=matriz[x-1][y+1].nMinas+48;
+		}
+		if(validar (x+1,y-1,filas,cols) && matriz[x+1][y-1].tipo=='C' && matriz[x+1][y-1].etiq=='*'){
+			matriz[x+1][y-1].etiq=matriz[x+1][y-1].nMinas+48;
+		}
+		if(validar (x+1,y,filas,cols) && matriz[x+1][y].tipo=='C' && matriz[x+1][y].etiq=='*' ){
+			matriz[x+1][y].etiq=matriz[x+1][y].nMinas+48;
+		}
+		if(validar (x+1,y+1,filas,cols)  && matriz[x+1][y+1].tipo=='C' && matriz[x+1][y+1].etiq=='*'){
+			matriz[x+1][y+1].etiq=matriz[x+1][y+1].nMinas+48;
+		}	
+
+	}	
 }
 
 void jugar (int filas,int cols, tipoCasilla **matriz,int x,int y,int z){
-	if (matriz[x][y].tipo=='C'){
-		matriz[x][y].etiq=matriz[x][y].nMinas;
+	if (z=='n' && matriz[x][y].tipo=='C'){
+		matriz[x][y].etiq=matriz[x][y].nMinas+48;
 		dibujarTablero(filas,cols,matriz);
+
 	}
-	if (z==7 && matriz[x][y].tipo=='M'){
+	if (z=='f' && (matriz[x][y].tipo=='M' || matriz[x][y].tipo=='C')){
 		matriz[x][y].etiq=matriz[x][y].f;
 		dibujarTablero(filas,cols,matriz);
+
 	}
 }
 
@@ -182,7 +201,7 @@ int ganar(int filas,int cols,tipoCasilla **matriz){
 	int i,j,l=0;
 	for (i=0;i<filas;i++){
 		for(j=0;j<cols;j++){
-			if (matriz[i][j].tipo=='M' && matriz[i][j].etiq==7 ){
+			if (matriz[i][j].tipo=='M' && matriz[i][j].etiq=='F'){
 				l++;
 			}
 		} 	
@@ -207,25 +226,33 @@ void main(int argc, char*argv[]){
 	PonerMinas(filas,cols,matriz,minas);
 	ColocarNumero(filas,cols,matriz);
 	dibujarTablero(filas,cols,matriz);
-	int x,y,z;
+	int x,y;
+	char z;
 	int n=0,p=0;
 	while (n<=(filas*cols)){
-		scanf("%d %d %d",&x,&y,&z);
-		int k=AbrirNumeros(filas,cols,matriz,x,y);
+		scanf("%d %d %c",&x,&y,&z);
 		int o=ganar(filas,cols,matriz);
-		if (matriz[x][y].tipo=='M' && z==0){
+		if (matriz[x][y].tipo=='M' && z=='n'){
 			printf ("PERDISTE HABIA UNA MINA EN ESA POSICION!!\n");
 			printf ("M=Mina C=Normal\n");
 			dibujarTablero2(filas,cols,matriz);
 			break;
 		}
-		if (matriz[x][y].tipo=='C' || z==7){
+		if (matriz[x][y].tipo=='C' && z=='n'){
 			printf ("-------------------------------\n");
 			p++;
 			AbrirNumeros(filas,cols,matriz,x,y);
 			jugar (filas,cols,matriz,x,y,z);
 			ganar(filas,cols,matriz);
+
+
 			
+		}	
+		if (matriz[x][y].tipo=='C' && z=='f'){
+			printf ("-------------------------------\n");
+			p++;
+			jugar (filas,cols,matriz,x,y,z);
+			ganar(filas,cols,matriz);
 		}	
 		n++;
 		if(o==minas-1){
@@ -236,6 +263,7 @@ void main(int argc, char*argv[]){
 			dibujarTablero2(filas,cols,matriz);
 			break;
 		}
+
 	}
 
 }
