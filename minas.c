@@ -120,8 +120,7 @@ void ColocarNumero(int filas,int cols, tipoCasilla **matriz){
 	}	
 }
 
-void AbrirNumeros(int filas,int cols, tipoCasilla **matriz,int x, int y){
-	int n=0,i,j;
+void verZeros(int filas,int cols,tipoCasilla **matriz,int x,int  y){
 	if (matriz[x][y].nMinas==0){
 		if(validar (x,y-1,filas,cols) && matriz[x][y-1].nMinas==0 && matriz[x][y-1].tipo=='C' && matriz[x][y-1].etiq=='*'){
 			matriz[x][y-1].etiq=matriz[x][y-1].nMinas+48;
@@ -154,6 +153,38 @@ void AbrirNumeros(int filas,int cols, tipoCasilla **matriz,int x, int y){
 		if(validar (x+1,y+1,filas,cols) && matriz[x+1][y+1].nMinas==0 && matriz[x+1][y+1].tipo=='C' && matriz[x+1][y+1].etiq=='*'){
 			matriz[x+1][y+1].etiq=matriz[x+1][y+1].nMinas+48;
 			AbrirNumeros(filas,cols,matriz,x+1,y+1);
+		}
+	}
+
+}
+
+
+void AbrirNumeros(int filas,int cols, tipoCasilla **matriz,int x, int y){
+	int n=0,i,j;
+	if (matriz[x][y].nMinas==0){
+		if(validar (x,y-1,filas,cols) && matriz[x][y-1].nMinas==0 && matriz[x][y-1].tipo=='C' && matriz[x][y-1].etiq=='*'){
+			verZeros(filas,cols,matriz,x,y-1);
+		}
+		if(validar (x,y+1,filas,cols) && matriz[x][y+1].nMinas==0 && matriz[x][y+1].tipo=='C' && matriz[x][y+1].etiq=='*'){
+			verZeros(filas,cols,matriz,x,y+1);
+		}		 
+		if(validar (x-1,y-1,filas,cols) && matriz[x-1][y-1].nMinas==0 && matriz[x-1][y-1].tipo=='C' && matriz[x-1][y-1].etiq=='*' ){
+			verZeros(filas,cols,matriz,x-1,y-1);
+		}		
+		if(validar (x-1,y,filas,cols) && matriz[x-1][y].nMinas==0 && matriz[x-1][y].tipo=='C' && matriz[x-1][y].etiq=='*'){
+			verZeros(filas,cols,matriz,x-1,y);
+		}
+		if(validar (x-1,y+1,filas,cols)  && matriz[x-1][y+1].nMinas==0 && matriz[x-1][y+1].tipo=='C' && matriz[x-1][y+1].etiq=='*'){
+			verZeros(filas,cols,matriz,x-1,y+1);
+		}
+		if(validar (x+1,y-1,filas,cols) && matriz[x+1][y-1].nMinas==0 && matriz[x+1][y-1].tipo=='C' && matriz[x+1][y-1].etiq=='*'){
+			verZeros(filas,cols,matriz,x+1,y-1);
+		}
+		if(validar (x+1,y,filas,cols) && matriz[x+1][y].nMinas==0 && matriz[x+1][y].tipo=='C' && matriz[x+1][y].etiq=='*' ){
+			verZeros(filas,cols,matriz,x+1,y);
+		}
+		if(validar (x+1,y+1,filas,cols) && matriz[x+1][y+1].nMinas==0 && matriz[x+1][y+1].tipo=='C' && matriz[x+1][y+1].etiq=='*'){
+			verZeros(filas,cols,matriz,x+1,y+1);
 		}
 		if(validar (x,y-1,filas,cols) && matriz[x][y-1].tipo=='C' && matriz[x][y-1].etiq=='*'){
 			matriz[x][y-1].etiq=matriz[x][y-1].nMinas+48;
